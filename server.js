@@ -36,3 +36,22 @@ app.get("/notes", function (req, res) {
       });
     });
   });
+
+  app.delete("/api/notes/:id", function(req,res){
+    const IDList = parseInt(req.params.id);
+      fs.readFile("db/db.json", (err,data) => {
+        jsonDB = JSON.parse(data); 
+        const updated = jsonDB.filter(item => {
+          return item.id !== IDList
+        });
+        fs.writeFile('db/db.json', JSON.stringify(updated), (err, data) => {
+            if (err) throw err; 
+            res.json(updated) 
+          });
+          });  
+      }); 
+      
+      app.listen(PORT, function() {
+          console.log("Listening on " + PORT);
+      });
+  
