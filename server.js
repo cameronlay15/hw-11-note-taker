@@ -22,3 +22,17 @@ app.get("/notes", function (req, res) {
       res.json(JSON.parse(data)); 
     });
   }); 
+ 
+  app.post("/api/notes", function (req, res) {
+    fs.readFile("db/db.json", (err,data) => {
+      jsonDB = JSON.parse(data); 
+      let newNote = req.body;
+      newNote.id = jsonDB.length;
+      jsonDB.push(newNote)
+      jsonDB = JSON.stringify(jsonDB); 
+      fs.writeFile('db/db.json', jsonDB, (err, data) => {
+        if (err) throw err; 
+        res.json(jsonDB) 
+      });
+    });
+  });
